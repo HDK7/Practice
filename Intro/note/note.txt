@@ -1,7 +1,6 @@
 
+테스트는 순서를 보장하지 않으므로 @AfterEach와 함께 초기화 @BeforeEach
+TDD 테스트 먼저 작성후 개발. 테스트 주도 개발방법
 
-�׽�Ʈ�� ������ �������� �����Ƿ� @AfterEach�� �Բ� �ʱ�ȭ
-TDD �׽�Ʈ ���� �ۼ��� ����. �׽�Ʈ �ֵ� ���߹��
-
-final ������ �ѹ��� �ʱ�ȭ�� �����ϴ�.
-given when then �׽�Ʈ
+final 변수는 한번만 초기화가 가능하다.
+given when then 테스트
