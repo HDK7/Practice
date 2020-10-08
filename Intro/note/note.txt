@@ -4,3 +4,11 @@ TDD 테스트 먼저 작성후 개발. 테스트 주도 개발방법
 
 final 변수는 한번만 초기화가 가능하다.
 given when then 테스트
+
+Controller에서 요청을 받고 Service에서 비즈니스 로직을 만들고  Repository에 저장을 한다. 정형화된 패턴
+
+@Autowired 주입은 생성자 주입을 추천. 필드 주입은 중간에 바꿀수 없고, set 주입은 set 함수 이름을 뺏게됨
+java bean 설정의 장점은 return 을 바꿔줌으로써 코드 한줄만 바꾸면됨
+
+Test시 @transactional 활용 @Test 메소드 마다 초기화 @Commit도 있으니 참고
+어노테이션 없이 단위테스트를 만드는 베이직이 더 좋은 테스트일 확률이 높다.

@@ -1,16 +1,19 @@
 package com.example.demo.service;
 
 import com.example.demo.Repository.MemberRepository;
-import com.example.demo.Repository.MemoryMemberRepository;
 import com.example.demo.domain.Member;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
