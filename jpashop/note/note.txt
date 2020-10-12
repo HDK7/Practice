@@ -1,0 +1,14 @@
+
+XTooOne 어노테이션은 LAZY 설정 필요
+persist객체 cascade 설정 필요.
+상관관계 메소드 설정 필요
+컬렉션은 필드에서 초기화 해야함. Hibernate가 감싸 변환 하기 때문에 처음부터 설정.
+연관관계 편의 메소드는 연관관계 주입이나 이런걸 다 떠나서 넣어줘야 찾을수 있음.
+//연관관계에서는 객체관점에서도 똑같이 값을 세팅해주는 것이 좋다.
+주인 관계 개념 한번더 상기
+team class에 List<Member>에 member를 넣어도 DB에 저장되지 않는다.
+Member class에서 List<Team>에 team을 추가하면 DB에 저장된다.
+https://private-space.tistory.com/87 참고..
+테이블 관점에서는 Member 클래스의 team 필드만 바꿔주면 되지만 JPA로 불러왔으나 아직 값이 변하지
+않은 순수 자바 객체인 경우 문제가 생길 수 있다. 그리므로 연관관계 편의 메소드를 만든다.
+@OneToOne @ManyToOne 같은 경우 엔티티간의 관계를 맵핑 해주는 역할이다. 안쓰면 칼럼인줄 알것이다.
