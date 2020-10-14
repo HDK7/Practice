@@ -3,11 +3,19 @@ package jpabook.jpashop.Service;
 import jpabook.jpashop.Repository.ItemRepository;
 import jpabook.jpashop.Repository.MemberRepository;
 import jpabook.jpashop.Repository.OrderRepository;
+import jpabook.jpashop.Repository.OrderSearch;
 import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.item.Item;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,6 +25,11 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
+
+
+    @Autowired
+    EntityManager em;
+
     //주문
     @Transactional
     public Long order(Long memberId, Long itemId, int count){
@@ -52,9 +65,9 @@ public class OrderService {
     }
 
     //검색
-    /*
-    public List<Order> findOrders(OrderSearch orderSearch){
-        return orderRepository.findAll(orderSEarch);
+
+    public List<Order> findOrders(OrderSearch orderSearch) {
+        return orderRepository.findAllByString(orderSearch);
     }
-    */
+
 }
