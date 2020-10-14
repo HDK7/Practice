@@ -1,5 +1,5 @@
 
-XTooOne 어노테이션은 LAZY 설정 필요
+XToOne 어노테이션은 LAZY 설정 필요
 persist객체 cascade 설정 필요.
 상관관계 메소드 설정 필요
 컬렉션은 필드에서 초기화 해야함. Hibernate가 감싸 변환 하기 때문에 처음부터 설정.
@@ -12,3 +12,8 @@ https://private-space.tistory.com/87 참고..
 테이블 관점에서는 Member 클래스의 team 필드만 바꿔주면 되지만 JPA로 불러왔으나 아직 값이 변하지
 않은 순수 자바 객체인 경우 문제가 생길 수 있다. 그리므로 연관관계 편의 메소드를 만든다.
 @OneToOne @ManyToOne 같은 경우 엔티티간의 관계를 맵핑 해주는 역할이다. 안쓰면 칼럼인줄 알것이다.
+Respository, Service, Entitiy에 메소드를 만드는 기준은?
+Entitiy 관계 종류 및 설정방법 N:1 1:N 1:1 관계 설정들
+동적쿼리 작성방법 //querydsl 이라는 방법이 있음.
+핵심기술은 대부분 Entitiy에 만드므로 단위테스트로 엔티티 핵심 메소드들을 꼼꼼히 테스트하는게 좋다
+

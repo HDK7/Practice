@@ -1,0 +1,23 @@
+spring:
+#  datasource:
+#    url: jdbc:h2:mem:test #memory mode로 가상으로 DB를 띄워 병렬 테스트를 가능하게 한다. DB가 꺼져있어도 테스트가능
+#                          # test apllication.yml 을 우선참조해 가능하게 됨,,,, 근데 별도의 설정없이도 스프링이 알아서 메모리DB로 연결..
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create #어플리케이션 실행시점에 내가 가지고 있는 table을 지우고 다시생성 // test는 이폴트가 create-drop 마지막에 테이블삭제
+#                 create는 drop create // create-drop은 drop create drop 까지 한번더 clear
+#    properties:
+#      hibernate:
+##        show_sql: true
+#        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+server:
+  port: 8081
