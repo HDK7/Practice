@@ -5,3 +5,5 @@ NamedQuery 는 문자열이지만 파싱해서 어플리케이션 로딩이 오�
 pageable 을 사용할 때 반환 타입에 따라 쿼리가 달라진다.
 
 Total count가 속도에서 문제가 생기는 경우가 많아서 Count Query만 따로 분리 할 수 있다.
+
+@Query 에서 fetch - join 작성으로 LAZY 개체들을 한번에 같이 불러옴. 또는 @EntityGraph로 해결

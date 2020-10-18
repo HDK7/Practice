@@ -225,4 +225,59 @@ class MemberRepositoryTest {
         assertThat(resultCount).isEqualTo(3);
 
     }
+
+    @Test
+    public void findMemberLazy(){
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        //when N + 1 문제 member쿼리 1 // team 쿼리 N 개 // 네트웍을 N번 연결해야하는 번거로움.
+//      List<Member> members = memberRepository.findAll();
+//      List<Member> members = memberRepository.findMemberFetchJoin(); // fetch join으로 한방에 가져옴
+//      List<Member> members = memberRepository.findAll(); //@EntityGraph 추가 오버라이딩으로 위와같은 기능
+        List<Member> members = memberRepository.findEntityGraphByUsername("member1");
+
+        for(Member member : members){
+            System.out.println("member = " + member.getUsername());
+            System.out.println("member.team = " + member.getTeam().getName());
+        }
+    }
+
+    @Test
+    public void queryHint(){
+        //given
+        Member member1 = memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();// 영속성 컨텍스트에 값이 없으면 DB에서 조회
+
+        //when
+//        Member findMember = memberRepository.findById(member1.getId()).get();
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+        //더티 체킹은 DB도 체크해야 하고 객체고 2개이고 비용이 들긴 든다.
+
+        em.flush();
+    }
+
+    @Test
+    public void lock(){
+        //given
+        Member member1 = memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        //when
+         memberRepository.findLockByUsername("member1");
+    }
+
+
 }
