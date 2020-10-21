@@ -5,11 +5,12 @@ import Study.datajpa.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.Entity;
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //in을 List로 받는것 예시
 
     List<Member> findListByUsername(String username);
+
     Member findMemberByUsername(String username);
+
     Optional<Member> findOptionalByUsername(String username);
     // 유연한 반환 타입
     // 주의 : 조회 된 것이 없어도 null을 반환하지 않고 size가 0 인 List 등을 반환하므로 ( XX == null) 이런 조건문은 못쓴다.
@@ -63,4 +66,30 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //em.flush() 와 em.clear() 가 뒤따라 와야함 clearAutomatically = true가 이역할을 대신 해줌
     //DB 업데이트만 해줄거면 상관없는데 업데이트 후 조회 해줄때 문제가 되는 것.
 
+    @Query("select m from Member m left join fetch m.team")
+        // join fetch란 member와 team을 한꺼번에 끌고옴
+    List<Member> findMemberFetchJoin();
+
+    @Override
+    @EntityGraph(attributePaths = {"team"})
+        // N+1 문제 join fetch 와 같은 역할
+    List<Member> findAll();
+
+    @EntityGraph(attributePaths = {"team"})
+    @Query("select m from Member m")
+    List<Member> findMemberEntityGraph(); // 가능
+
+    @EntityGraph(attributePaths = ("team"))
+    List<Member> findEntityGraphByUsername(@Param("username") String username); // 이렇게도 사용
+
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))// 스냅샷도 만들지 않고 최적화 온리 조회용.
+    Member findReadOnlyByUsername(String username);
+    //암달의 법칙. 조회용으로 쓴다고 모두 readOnly를 쓴다고 해도 크게 성능 향상이 생기진 않는다.
+    //복잡한 조회 쿼리가 나가서 장애가 나는것이 거의 90퍼이긴하다..
+    //정말 많이 쓰는 조회 메소드만 몇개 하는 것
+    //사실 트래픽이 터질 정도면이미 캐쉬가 필요한 시점일 수도 있다.
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<Member> findLockByUsername(String username);
+    // 이런게 있다 소개. JPA가 제공하는 LOCK 기능을 어노테이션으로 사용가능하다.
 }
