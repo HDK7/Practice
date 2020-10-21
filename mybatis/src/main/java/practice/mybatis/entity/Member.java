@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class members {
+public class Member {
 
     long m_num;
     String name;
