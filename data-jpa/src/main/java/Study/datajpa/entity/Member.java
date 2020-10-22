@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"}) // 연관관계 필드 team같은 것은 쓰면 안된다. 연동되서 무한루프에 빠질 수 있다.
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue

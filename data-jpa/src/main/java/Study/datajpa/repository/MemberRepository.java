@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
@@ -92,4 +92,17 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Member> findLockByUsername(String username);
     // 이런게 있다 소개. JPA가 제공하는 LOCK 기능을 어노테이션으로 사용가능하다.
+
+    <T> List<T> findProjectionsByUsername(@Param("username") String username, Class<T> type);
+
+    @Query(value = "select * from member where username = ?", nativeQuery = true)
+    Member findByNativeQuery(String username);
+    // 한계 select 문을 일일이 DTO 에 맞게 써야함 칼럼을 모두 써야함. join 해서 DTO로 가져올때쓰는데
+    // 이것보다 JdbcTemplate or myBatis 권장 JPQL or queryDSL 가능
+
+    @Query(value = "select m.member_id as id, m.username, t.name as teamName  " +
+            "from member m left join team t",
+            countQuery = "select count(*) from member",
+            nativeQuery = true)
+    Page<MemberProjection> findByNativeProjection(Pageable pageable);
 }
